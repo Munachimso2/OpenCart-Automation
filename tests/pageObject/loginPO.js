@@ -1,4 +1,4 @@
-export class loginPO {
+export class LoginPO {
     constructor(page) {
         this.page = page;
         this.userEmail = page.locator("#input-email");
@@ -21,5 +21,4 @@ export class loginPO {
         await this.loginButton.click();
         await this.page.waitForLoadState("networkidle");
     }
-
 } 

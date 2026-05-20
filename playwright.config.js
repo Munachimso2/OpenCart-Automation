@@ -69,8 +69,9 @@ export default defineConfig({
         dependencies: ['setup'],
         testMatch: [
             '**/logout.spec.js',
-            '**/cart.spec.js',
-            '**/checkout.spec.js'
+            '**/cartFeatures.spec.js',
+            '**/checkout.spec.js',
+            '**/search.spec.js'
         ]
     }
 ],
