@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { registerPO } from '../pageObject/registerPO';
-import { loginPO } from '../pageObject/loginPO';
+import { LoginPO } from '../pageObject/loginPO';
 
 test.describe.serial('Register and Login Flow', () => {
     let testEmail;
@@ -17,7 +17,7 @@ test.describe.serial('Register and Login Flow', () => {
     });
 
     test('should login with registered user', async ({ page }) => {
-        const loginPage = new loginPO(page);
+        const loginPage = new LoginPO(page);
         await loginPage.goto();
         await loginPage.login(testEmail, process.env.USER_PASSWORD);
         await expect(page.getByRole("heading", { name: "My Account" }).nth(0)).toBeVisible();
@@ -168,4 +168,3 @@ test.describe("Other registration test cases", () => {
     });
 
 })
-

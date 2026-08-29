@@ -2,7 +2,7 @@ export class LogoutPO {
     constructor(page) {
         this.page = page;
         this.logoutButton = page.getByRole('link', { name: 'Logout' }).nth(0);
-        this.accountLogoutHeading = page.locator("a.dropdown-toggle")
+        this.accountLogoutHeading = page.locator('a[title="My Account"]')
         this.continueButton = page.getByRole('link', { name: 'Continue' });
     }
 

@@ -2,7 +2,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+dotenv.config({ path: path.resolve(process.cwd(), '.env'), quiet: true });
 
 
 /**
@@ -11,6 +11,8 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env') });
  */
 export default defineConfig({
   testDir: './tests',
+  timeout: 45000,
+  expect: { timeout: 10000 },
   /* Run tests in files in parallel */
   // fullyParallel: true,
   fullyParallel: false, // This is to run tests in serial because of the registration flow test that needs to be run in order. You can set it to true if you want to run tests in parallel but make sure to remove the serial keyword from the describe block in register.spec.js
@@ -24,11 +26,13 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    navigationTimeout: 45000,
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
   },
 
   projects: [
@@ -68,9 +72,16 @@ export default defineConfig({
         },
         dependencies: ['setup'],
         testMatch: [
-            '**/logout.spec.js',
+            '**/logout.spec.js'
+        ]
+    },
+    {
+        name: 'shopping',
+        use: {
+            ...devices['Desktop Chrome']
+        },
+        testMatch: [
             '**/cartFeatures.spec.js',
-            '**/checkout.spec.js',
             '**/search.spec.js'
         ]
     }

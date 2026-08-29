@@ -5,13 +5,15 @@ export class CartPO {
         this.cartSuccessMessage = page.locator('.alert-success');
         this.cartItemsCount = page.locator('#cart-total');
         this.cartLink = page.locator('#cart > button');
-        this.cartItemsList = page.locator('.dropdown-menu .cart-info');
+        this.cartItemsList = page.locator('#content form .table-responsive tbody tr');
+        this.totalPrice = page.locator('#content .table-bordered tr').last().locator('td').last();
     }
 
 
     async addProductToCart(productName) {
+        await this.page.goto('https://tutorialsninja.com/demo/index.php?route=common/home', { waitUntil: 'domcontentloaded' });
         await this.page.fill('input[name="search"]', productName);
-        await this.page.click('button[type="submit"]');
+        await this.page.locator("#search button[type='button']").click();
         await this.addToCartBtn.first().click();
         await this.cartSuccessMessage.waitFor();
     }
@@ -24,21 +26,23 @@ export class CartPO {
     }
 
     async openCart() {
-        await this.cartLink.click();        
+        await this.page.goto('https://tutorialsninja.com/demo/index.php?route=checkout/cart', { waitUntil: 'domcontentloaded' });
     }
 
     async removeProductFromCart(productName) {
         await this.openCart();
-        const productRow = this.cartItemsList.locator(`text=${productName}`).first();
-        await productRow.locator('button[title="Remove"]').click();
+        const productRow = this.cartItemsList.filter({ hasText: productName }).first();
+        await productRow.locator('button[type="button"]').click();
+        await this.page.waitForLoadState('domcontentloaded');
     }
 
     async updateProductQuantityInCart(productName, quantity) {
         await this.openCart();
-        const productRow = this.cartItemsList.locator(`text=${productName}`).first();
+        const productRow = this.cartItemsList.filter({ hasText: productName }).first();
         const quantityInput = productRow.locator('input[name="quantity"]');
         await quantityInput.fill(quantity.toString());
-        await quantityInput.press('Enter');
+        await productRow.locator('button[type="submit"]').click();
+        await this.page.waitForLoadState('domcontentloaded');
     }   
 
     async getCartItemsCount() {
