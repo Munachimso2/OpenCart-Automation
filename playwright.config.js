@@ -37,10 +37,6 @@ export default defineConfig({
 
   projects: [
     {
-        name: 'setup',
-        testMatch: '**/auth.setup.js'
-    },
-    {
         name: 'chromium',
         use: { ...devices['Desktop Chrome'] },
         testMatch: [
@@ -67,10 +63,8 @@ export default defineConfig({
     {
         name: 'logged-in',
         use: {
-            ...devices['Desktop Chrome'],
-            storageState: 'auth.json'
+            ...devices['Desktop Chrome']
         },
-        dependencies: ['setup'],
         testMatch: [
             '**/logout.spec.js'
         ]

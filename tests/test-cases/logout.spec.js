@@ -1,20 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { LogoutPO } from '../pageObject/logoutPO';
 import { LoginPO } from "../pageObject/loginPO"
-test.use({ storageState: 'auth.json' });
-
-
-
 test.describe('Logout Functionality', () => {
     test.beforeEach(async ({ page }) => {
-        // Navigate to the account page before each test
-        await page.goto('https://tutorialsninja.com/demo/index.php?route=account/account');
-    });
-
-    test.afterEach(async ({ page }) => {
-        // Clear cookies and local storage after each test to ensure a clean state
-        await page.context().clearCookies();
-        await page.evaluate(() => localStorage.clear());
+        const loginPage = new LoginPO(page);
+        await page.goto('https://tutorialsninja.com/demo/index.php?route=account/login');
+        await loginPage.login(process.env.USER_EMAIL, process.env.USER_PASSWORD);
+        await expect(page).toHaveURL(/route=account\/account/);
     });
 
     // Test cases will go here
