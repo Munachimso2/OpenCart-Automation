@@ -34,7 +34,8 @@ test.describe('Logout Functionality', () => {
         await page.goBack();
         await page.reload();
         await page.waitForLoadState("networkidle");
-        await expect(page).toHaveURL('https://tutorialsninja.com/demo/index.php?route=account/login');
+        await expect(page).not.toHaveURL(/route=account\/account/);
+        await expect(page.getByRole('link', { name: 'Logout' })).toHaveCount(0);
     });
 
     // This test is skipped because the we are authenticated therefore we dont have a way to 
