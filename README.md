@@ -4,13 +4,13 @@
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)](https://developer.mozilla.org/docs/Web/JavaScript)
 [![Playwright Tests](https://github.com/Munachimso2/OpenCart-Automation/actions/workflows/playwright.yml/badge.svg)](https://github.com/Munachimso2/OpenCart-Automation/actions/workflows/playwright.yml)
 
-A Playwright and JavaScript end-to-end automation framework for the OpenCart demo application. This portfolio project demonstrates maintainable Page Objects, cross-browser execution, reusable authenticated state, negative testing, and CI execution for core account and shopping workflows.
+A Playwright and JavaScript end-to-end automation framework for the OpenCart demo application. This portfolio project demonstrates maintainable Page Objects, cross-browser execution, isolated authenticated scenarios, negative testing, and CI execution for core account and shopping workflows.
 
 ## Framework highlights
 
 - **Page Object Model:** page-specific selectors and actions are separated from test intent for login, registration, logout, search, and cart behavior.
 - **Cross-browser testing:** login and registration suites are configured for Chromium, Firefox, and WebKit.
-- **Reusable authentication:** a setup project signs in once and saves Playwright `storageState`; authenticated logout, search, and cart tests reuse that state in Chromium.
+- **Independent authentication:** each logout scenario signs in with the dedicated demo account so one server-side logout cannot invalidate another test's session.
 - **CI-aware execution:** CI forbids committed `test.only`, retries failures twice, and uses one worker for predictable execution against a shared demo environment.
 - **Failure diagnostics:** HTML reporting and trace capture on the first retry support investigation of intermittent failures.
 - **Secure configuration:** local values are loaded with `dotenv`; GitHub Actions supplies credentials and test data through encrypted repository secrets.
@@ -34,7 +34,6 @@ One rate-limit scenario is intentionally skipped because the shared demo environ
 ```text
 ├── .github/workflows/playwright.yml
 ├── tests
-│   ├── auth.setup.js
 │   ├── pageObject
 │   │   ├── cartFeaturesPO.js
 │   │   ├── loginPO.js
